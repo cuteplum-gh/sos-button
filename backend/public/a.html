@@ -1,0 +1,24 @@
+<!-- index.html 客戶端 A -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Example</title>
+</head>
+<body>
+  <h1>Socket.IO Example - Client A</h1>
+  <button onclick="sendMessage()">求救</button>
+
+  <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+
+    function sendMessage() {
+      const message = prompt('Enter your message:');
+      socket.emit('send_message', message);
+    }
+  </script>
+</body>
+</html>

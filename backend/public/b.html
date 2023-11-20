@@ -1,0 +1,22 @@
+<!-- index.html 客戶端 B -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Example - Client B</title>
+</head>
+<body>
+  <h1>Socket.IO Example - Client B</h1>
+
+  <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on('receive_message', (data) => {
+      alert(`Message from A: ${data}`);
+    });
+  </script>
+</body>
+</html>
