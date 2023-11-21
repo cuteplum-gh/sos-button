@@ -10,7 +10,7 @@ class ReceiveC extends Component {
       messages: [],
     };
 
-    this.socket = io('http://localhost:3001'); // 請替換成你的伺服器地址
+    this.socket = io(); // Socket.IO will connect to the same server it is served from
   }
 
   componentDidMount() {

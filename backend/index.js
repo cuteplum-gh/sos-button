@@ -2,6 +2,7 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
@@ -11,10 +12,10 @@ const cors = require('cors');
 app.use(cors());
 
 
-// Create an io server and allow for CORS from http://localhost:3000 with GET and POST methods
+// Allow all origins in your CORS configuration to handle requests from your deployed frontend.
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: '*',
     methods: ['GET', 'POST'],
   },
 });
@@ -32,6 +33,15 @@ io.on('connection', (socket) => {
     console.log('User disconnected');
   });
 });
+
+
+// Let the Express server know to serve the React project
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 
 const port = process.env.PORT || 3001;
 
