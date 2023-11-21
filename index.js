@@ -25,7 +25,6 @@ io.on('connection', (socket) => {
   console.log('A user connected');
 
   socket.on('send_message', (data) => {
-    console.log('Message from React:', data);
     io.emit('receive_message', data);
   });
 
