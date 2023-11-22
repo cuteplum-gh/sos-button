@@ -48,11 +48,11 @@ const port = process.env.PORT || 3001;
 
 // Set up the interval to ping the app every 5 minutes (stay awake)
 setInterval(function() {
-    http.get(`https://${host}:${port}`);
+    http.get(`http://${host}:${port}`);
 }, 300000); // every 5 minutes (300000)
 
 server.listen(port, () => {
-    console.log(`Server is running on https://${host}:${port}`);
+    console.log(`Server is running on http://${host}:${port}`);
 });
 
 
