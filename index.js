@@ -2,7 +2,6 @@
 const express = require('express');
 const http = require('http');
 const https = require('https');
-const socketIO = require('socket.io');
 const path = require('path');
 
 const app = express();
@@ -53,7 +52,7 @@ setInterval(function() {
   // Create an instance of https.Agent
   const agent = new https.Agent({ rejectUnauthorized: false }); // Set rejectUnauthorized to false if you're working with a self-signed certificate
 
-  https.get(`https://${host}:${port}`, { agent }, (res) => {
+  https.get("https://sos-button.onrender.com", { agent }, (res) => {
       // Handle the response if needed
       console.log('Ping successful');
   }).on('error', (err) => {
