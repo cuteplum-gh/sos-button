@@ -42,12 +42,18 @@ app.get('/*', (req, res) => {
 });
 
 
+// Get the host and port from environment variables
+const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 3001;
 
-server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+// Set up the interval to ping the app every 5 minutes (stay awake)
+setInterval(function() {
+    http.get(`https://${host}:${port}`);
+}, 300000); // every 5 minutes (300000)
 
+server.listen(port, () => {
+    console.log(`Server is running on https://${host}:${port}`);
+});
 
 
 // 監聽到關閉事件，執行指定的處理程序
