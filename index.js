@@ -1,6 +1,7 @@
 // Express.js Server
 const express = require('express');
 const http = require('http');
+const https = require('https');
 const socketIO = require('socket.io');
 const path = require('path');
 
@@ -42,18 +43,28 @@ app.get('/*', (req, res) => {
 });
 
 
+
 // Get the host and port from environment variables
 const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || 3001;
 
-// Set up the interval to ping the app every 5 minutes (stay awake)
+// Set up the interval to ping the app every 5 minutes
 setInterval(function() {
-    http.get(`http://${host}:${port}`);
+  // Create an instance of https.Agent
+  const agent = new https.Agent({ rejectUnauthorized: false }); // Set rejectUnauthorized to false if you're working with a self-signed certificate
+
+  https.get(`https://${host}:${port}`, { agent }, (res) => {
+      // Handle the response if needed
+      console.log('Ping successful');
+  }).on('error', (err) => {
+      console.error('Ping error:', err.message);
+  });
 }, 300000); // every 5 minutes (300000)
 
 server.listen(port, () => {
-    console.log(`Server is running on http://${host}:${port}`);
+  console.log(`Server is running on https://${host}:${port}`);
 });
+
 
 
 // 監聽到關閉事件，執行指定的處理程序
