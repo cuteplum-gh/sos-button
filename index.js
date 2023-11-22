@@ -53,7 +53,7 @@ setInterval(function() {
   // Create an instance of https.Agent
   const agent = new https.Agent({ rejectUnauthorized: false }); // Set rejectUnauthorized to false if you're working with a self-signed certificate
 
-  https.get("https://sos-button.onrender.com", { agent }, (res) => {
+  https.get(`https://${host}:${port}`, { agent }, (res) => {
       // Handle the response if needed
       console.log('Ping successful');
   }).on('error', (err) => {
