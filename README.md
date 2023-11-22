@@ -1,1 +1,1 @@
-This branch is the original verson which I developed on my local machine.
+This branch is the original verson developed on a local machine.
