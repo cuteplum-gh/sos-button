@@ -3,12 +3,14 @@
     "sosButtonMessage_fill": "Please fill in the blanks",
     "sosButtonMessage_sos": "SOS !",
     "sosButtonMessage_sent": "SOS sent",
-    "nameLabel": "*Name :",
+    "nameLabel": "Name : *",
     "phoneLabel": "Phone :",
     "addressLabel": "Address :",
     "emergencyNameLabel": "Emergency Contact Name :",
-    "emergencyPhoneLabel": "*Emergency Contact Phone :",
+    "emergencyPhoneLabel": "Emergency Contact Phone : *",
     "locationLabel": "Current Location :",
     "loadingLocation": "Loading location...",
-    "cookieMessage": "This page uses Cookies to store your data"
+    "cookieMessage": "Use Cookies to store your data ?",
+    "cookieAgree": "Agree",
+    "cookieDisagree": "Disagree"
   }
