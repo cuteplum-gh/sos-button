@@ -21,6 +21,7 @@ class SendC extends Component {
       sosButtonMessage: chineseText.sosButtonLabel,
       language: 'zh',
       texts: chineseText,
+      agreement: Cookies.get('agreement') || null, // Initialize with the cookie value or null
     };
     this.socket = io(); // Socket.IO will connect to the same server it is served from
   }
@@ -99,12 +100,6 @@ class SendC extends Component {
     );
   }
 
-  handleChange = (e, field, cookieName) => {
-    const v = e.target.value;
-    this.setState({ [field]: v });
-    Cookies.set(cookieName, v, { expires: 9999 });
-  };
-
   handleNameOrPhoneChange = () => {
     const { uName, uEPhone } = this.state;
     const isDisabled = uName.trim() === '' || uEPhone.trim() === '';
@@ -144,10 +139,49 @@ class SendC extends Component {
       texts: newTexts,
     }, () => {
       this.handleNameOrPhoneChange();
-      Cookies.set('language', this.state.language, { expires: 9999 });
+      if(this.state.agreement=='agree'){
+        Cookies.set('language', this.state.language, { expires: 9999 });
+      }
     });
   };
 
+  handleChange = (e, field, cookieName) => {
+    const v = e.target.value;
+    this.setState({ [field]: v });
+    if(this.state.agreement=='agree'){
+      Cookies.set(cookieName, v, { expires: 9999 });
+    }
+  };
+
+  updateCookies = () => {
+    const { agreement, language, uName, uPhone, uAdd, uEName, uEPhone } = this.state;
+    // If agreement is 'agree', update or set each cookie
+    if (agreement === 'agree') {
+      Cookies.set('agreement', agreement, { expires: 9999 }); // Save agreement to cookie
+      Cookies.set('language', language, { expires: 9999 });
+      Cookies.set('uName', uName, { expires: 9999 });
+      Cookies.set('uPhone', uPhone, { expires: 9999 });
+      Cookies.set('uAdd', uAdd, { expires: 9999 });
+      Cookies.set('uEName', uEName, { expires: 9999 });
+      Cookies.set('uEPhone', uEPhone, { expires: 9999 });
+    } else {
+      // If agreement is 'disagree', delete all cookies
+      Cookies.remove('agreement');
+      Cookies.remove('language');
+      Cookies.remove('uName');
+      Cookies.remove('uPhone');
+      Cookies.remove('uAdd');
+      Cookies.remove('uEName');
+      Cookies.remove('uEPhone');
+    }
+  };
+
+  handleAgreementChange = (value) => {
+    this.setState({ agreement: value }, () => {
+      // Call updateCookies after state is updated
+      this.updateCookies();
+    });
+  };
 
   render() {
     const { location, error, isSOSButtonDisabled, sosButtonMessage, texts } = this.state;
@@ -241,17 +275,47 @@ class SendC extends Component {
 
         <div className="row">
           <div className="col-md-6 offset-md-6">
+            <p>
+              <label>{texts.cookieMessage}</label>
+              <div style={{ width: '80%', marginLeft: '10%'}}>
+                <div style={{ textAlign: 'center' }}>
+                  <div className="form-check form-check-inline" style={{ marginRight: '30px' }}>
+                    <input
+                      className="form-check-input shadow"
+                      type="radio"
+                      name="agreement"
+                      id="agree"
+                      value="agree"
+                      checked={this.state.agreement === 'agree'}
+                      onChange={() => this.handleAgreementChange('agree')}
+                    />
+                    <label className="form-check-label" htmlFor="agree" style={{ fontWeight: 'bold' }}>{texts.cookieAgree}</label>
+                  </div>
+                  <div className="form-check form-check-inline">
+                    <input
+                      className="form-check-input shadow"
+                      type="radio"
+                      name="agreement"
+                      id="disagree"
+                      value="disagree"
+                      checked={this.state.agreement === 'disagree'}
+                      onChange={() => this.handleAgreementChange('disagree')}
+                    />
+                    <label className="form-check-label" htmlFor="disagree" style={{ fontWeight: 'bold' }}>{texts.cookieDisagree}</label>
+                  </div>
+                </div>
+              </div>
+            </p>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-6 offset-md-6">
             {location ? (
               <p>{texts.locationLabel} {location.latitude}, {location.longitude}</p>
             ) : (
               <p>{error || texts.loadingLocation}</p>
             )}
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-6 offset-md-6 text-center">
-            <p className="text-muted" style={{ fontSize: '0.8rem' }}>{texts.cookieMessage}</p>
           </div>
         </div>
 
